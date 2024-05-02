@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>acTiny Demo</title>
+	<link rel="stylesheet" href="./animate.min.css"	/>
+	<script type="text/javascript" src="actiny.min.js"></script>
+</head>
+<body>
+
+	<div id="testid" style="opacity: 0;">TEST ID</div>
+	<div class="testclass">TEST CLASS</div>
+
+</body>
+
+<script type="text/javascript">
+
+
+	function toto() {
+		console.log('bodytoto');
+	}
+
+	$('#testid').html('test1').html('<div>test3</div>').append('<0>').prepend('<0>').animate('bounceIn').then(() => {
+		$('#testid').animate('bounceOut');
+    	console.log('end');
+  	});
+	console.log($('.testclass').html('test2').text());
+	$('body').attr('onclick', 'toto()');
+
+	$('.testclass').on('dblclick', function() {
+		alert('clicked');
+	});
+
+	$('.testclass').slideUp('RightBig', 3000);
+
+	$.get('https://jsonplaceholder.typicode.com/todos/1').then(data => {
+		console.log('LOG', data);
+	});
+
+	$.getJSON('https://jsonplaceholder.typicode.com/todos/1').then(data => {
+		console.log('LOG', data);
+	});
+</script>
+
+</html>
