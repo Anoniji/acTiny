@@ -90,8 +90,10 @@ function checkAnimateImport() {
 }
 
 /* LIST */
+const effectList = [
+	'bounce', 'flash', 'pulse', 'rubberBand', 'shakeX', 'shakeY', 'headShake', 'swing', 'tada', 'wobble', 'jello', 'heartBeat'
+];
 const animateList = [
-	'bounce', 'flash', 'pulse', 'rubberBand', 'shakeX', 'shakeY', 'headShake', 'swing', 'tada', 'wobble', 'jello', 'heartBeat',
 	'backInDown', 'backInLeft', 'backInRight', 'backInUp', 'Back exits', 'backOutDown', 'backOutLeft', 'backOutRight', 'backOutUp',
 	'bounceIn', 'bounceInDown', 'bounceInLeft', 'bounceInRight', 'bounceInUp', 'Bouncing exits', 'bounceOut', 'bounceOutDown',
 	'bounceOutLeft', 'bounceOutRight', 'bounceOutUp', 'fadeIn', 'fadeInDown', 'fadeInDownBig', 'fadeInLeft', 'fadeInLeftBig',
@@ -189,11 +191,21 @@ function acTiny(selector) {
 			} 
 			return element.textContent;
 		},
-		val: function() {
+		val: function(content=false) {
 			if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement || element instanceof HTMLSelectElement) {
-				return element.value;
+				if(content) {
+					element.value = content;
+					return this;
+				} else {
+					return element.value;
+				}
 			} else {
-				return element.textContent;
+				if(content) {
+					element.textContent = content;
+					return this;
+				} else {
+					return element.textContent;
+				}
 			}
 		},
 		after: function(elm, content) {
@@ -354,6 +366,15 @@ function acTiny(selector) {
 			} else {
 				console.error(`Event not exist: ${event}`);
 				console.error(`Event list     : ${eventList.join(', ')}`);
+				return null;
+			}
+		},
+		effect: function(effect, duration, delay) {
+			if(isInList(effectList, effect)) {
+				return animateSimplify(element, effect, duration, delay);
+			} else {
+				console.error(`Effect not exist: ${effect}`);
+				console.error(`Effect list     : ${effectList.join(', ')}`);
 				return null;
 			}
 		},
