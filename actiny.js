@@ -16,7 +16,7 @@ function isInList(list, value) {
 	return list.indexOf(value) !== -1;
 }
 
-function fetchSimplify(typeRequete, url, header={}, body, isJson=true) {
+function fetchSimplify(typeRequete, url, header = {}, body, isJson = true) {
 	return new Promise((resolve, reject) => {
 		try {
 			if (body && typeof body !== 'string') {
@@ -40,8 +40,8 @@ function fetchSimplify(typeRequete, url, header={}, body, isJson=true) {
 					return response.text();
 				}
 			}).then(data => {
-          		resolve(data);
-        	}).catch(error => {
+				resolve(data);
+			}).catch(error => {
 				console.error(error);
 				reject(error);
 			});
@@ -52,8 +52,8 @@ function fetchSimplify(typeRequete, url, header={}, body, isJson=true) {
 	});
 }
 
-function animateSimplify(element, animation, duration=1000, delay=0) {
-	return new Promise((resolve, reject) => { 
+function animateSimplify(element, animation, duration = 1000, delay = 0) {
+	return new Promise((resolve) => { 
 		element.style.animationDuration = `${duration}ms`;
 		element.style.animationDelay = `${delay}ms`;
 
@@ -62,7 +62,7 @@ function animateSimplify(element, animation, duration=1000, delay=0) {
 
 		// Remove initial styles after animation ends
 		const animationEndHandler = () => {
-			if(animation.includes("In")) {
+			if (animation.includes("In")) {
 				element.style.display = '';
 				element.style.opacity = '';
 			} else {
@@ -110,7 +110,7 @@ const animateList = [
 const eventList = [
 	'click', 'dblclick',
 	'mousedown', 'mouseup', 'mousemove', 'mouseover', 'mouseout',
-	'keydown', 'keyup','keypress', 
+	'keydown', 'keyup', 'keypress', 
 	'submit', 'change', 'input', 'load', 'resize', 'scroll', 'beforeunload', 'unload',
 	'DOMContentLoaded', 'readystatechange', 
 ];
@@ -178,30 +178,30 @@ function acTiny(selector) {
 	}
 
 	return {
-		html: function(content=false) {
-			if(content) {
+		html: function (content = false) {
+			if (content) {
 				element.innerHTML = content;
 				return this;
 			}
 			return element.innerHTML;
 		},
-		text: function(content=false) {
-			if(content) {
+		text: function (content = false) {
+			if (content) {
 				element.textContent = content;
 				return this;
 			} 
 			return element.textContent;
 		},
-		val: function(content=false) {
+		val: function (content = false) {
 			if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement || element instanceof HTMLSelectElement) {
-				if(content) {
+				if (content) {
 					element.value = content;
 					return this;
 				} else {
 					return element.value;
 				}
 			} else {
-				if(content) {
+				if (content) {
 					element.textContent = content;
 					return this;
 				} else {
@@ -209,7 +209,7 @@ function acTiny(selector) {
 				}
 			}
 		},
-		after: function(elm, content) {
+		after: function (elm, content) {
 			const newContent = document.createElement(elm);
 			newContent.textContent = content;
 
@@ -219,7 +219,7 @@ function acTiny(selector) {
 			element.parentNode.insertBefore(newContent, element.nextElementSibling);
 			return this;
 		},
-		before: function(elm, content) {
+		before: function (elm, content) {
 			const newContent = document.createElement(elm);
 			newContent.textContent = content;
 
@@ -229,45 +229,45 @@ function acTiny(selector) {
 			element.parentNode.insertAfter(newContent, element.nextElementSibling);
 			return this;
 		},
-		prepend: function(content) {
+		prepend: function (content) {
 			element.insertAdjacentHTML('afterbegin', content);
 			return this;
 		},
-		append: function(content) {
+		append: function (content) {
 			element.insertAdjacentHTML('beforeend', content);
 			return this;
 		},
-		empty: function() {
+		empty: function () {
 			element.parentNode.removeChild(element);
 			return this;
 		},
-		attr: function(attribute, content) {
+		attr: function (attribute, content) {
 			element.setAttribute(attribute, content);
 			return this;
 		},
-		removeAttr: function(attribute) {
+		removeAttr: function (attribute) {
 			element.removeAttribute(attribute);
 			return this;
 		},
-		addClass: function(className) {
+		addClass: function (className) {
 			element.classList.add(className);
 			return this;
 		},
-		removeClass: function(className) {
+		removeClass: function (className) {
 			element.classList.remove(className);
 			return this;
 		},
-		toggleClass: function(className) {
+		toggleClass: function (className) {
 			element.classList.toggle(className);
 			return this;
 		},
-		hasClass: function(className) {
-			if(element.classList.contains(className)) {
+		hasClass: function (className) {
+			if (element.classList.contains(className)) {
 				return this
 			}
 			return false;
 		},
-		css: function() {
+		css: function () {
 			const styles = {};
 			const computedStyles = window.getComputedStyle(element);
 			for (const property in computedStyles) {
@@ -277,81 +277,81 @@ function acTiny(selector) {
 			}
 			return styles;
 		},
-		position: function() {
+		position: function () {
 			const rect = element.getBoundingClientRect();
 			return {
 				x: rect.left + window.scrollX,
 				y: rect.top + window.scrollY
 			};
 		},
-		width: function() {
+		width: function () {
 			return element.offsetWidth;
 		},
-		height: function() {
+		height: function () {
 			return element.offsetHeight;
 		},
-		prop: function(attribute, set) {
-			if(set) {
+		prop: function (attribute, set) {
+			if (set) {
 				element.setAttribute(attribute);
 			} else {
 				element.removeAttribute(attribute);	
 			}
 			return this;
 		},
-		click: function(funct) {
-			element.addEventListener('click', function() {
+		click: function (funct) {
+			element.addEventListener('click', function () {
 				funct();
 			});
 			return this;
 		},
-		dblclick: function(funct) {
-			element.addEventListener('dblclick', function() {
+		dblclick: function (funct) {
+			element.addEventListener('dblclick', function () {
 				funct();
 			});
 			return this;
 		},
-		keydown: function(funct) {
-			element.addEventListener('keydown', function() {
+		keydown: function (funct) {
+			element.addEventListener('keydown', function () {
 				funct();
 			});
 			return this;
 		},
-		keyup: function(funct) {
-			element.addEventListener('keyup', function() {
+		keyup: function (funct) {
+			element.addEventListener('keyup', function () {
 				funct();
 			});
 			return this;
 		},
-		keypress: function(funct) {
-			element.addEventListener('keypress', function() {
+		keypress: function (funct) {
+			element.addEventListener('keypress', function () {
 				funct();
 			});
 			return this;
 		},
-		change: function(funct) {
-			element.addEventListener('change', function() {
+		change: function (funct) {
+			element.addEventListener('change', function () {
 				funct();
 			});
 			return this;
 		},
-		submit: function(funct) {
-			element.addEventListener('submit', function() {
+		submit: function (funct) {
+			element.addEventListener('submit', function () {
 				funct();
 			});
 			return this;
 		},
-		hover: function(funct) {
-			element.addEventListener('mouseenter', function() {
+		hover: function (funct) {
+			element.addEventListener('mouseenter', function () {
 				funct();
 			});
-			element.addEventListener('mouseleave', function() {
+			element.addEventListener('mouseleave', function () {
 				funct();
 			});
 			return this;
 		},
-		on: function(event, funct) {
-			if(isInList(eventList, event)) {
-				return element.addEventListener(event, function() {
+		on: function (event, funct) {
+			if (isInList(eventList, event)) {
+				return element.addEventListener(event, function () {
 					funct();
 				});
 			} else {
@@ -360,8 +360,8 @@ function acTiny(selector) {
 				return null;
 			}
 		},
-		off: function(event, handler) {
-			if(isInList(eventList, event)) {
+		off: function (event, handler) {
+			if (isInList(eventList, event)) {
 				element.removeEventListener(event, handler);
 				return this;
 			} else {
@@ -370,8 +370,8 @@ function acTiny(selector) {
 				return null;
 			}
 		},
-		effect: function(effect, duration, delay) {
-			if(isInList(effectList, effect)) {
+		effect: function (effect, duration, delay) {
+			if (isInList(effectList, effect)) {
 				return animateSimplify(element, effect, duration, delay);
 			} else {
 				console.error(`Effect not exist: ${effect}`);
@@ -379,8 +379,8 @@ function acTiny(selector) {
 				return null;
 			}
 		},
-		animate: function(animation, duration, delay) {
-			if(isInList(animateList, animation)) {
+		animate: function (animation, duration, delay) {
+			if (isInList(animateList, animation)) {
 				return animateSimplify(element, animation, duration, delay);
 			} else {
 				console.error(`Animate not exist: ${animation}`);
@@ -388,14 +388,14 @@ function acTiny(selector) {
 				return null;
 			}
 		},
-		show: function(duration, delay) {
+		show: function (duration, delay) {
 			return animateSimplify(element, 'fadeIn', duration, delay);
 		},
-		hide: function(duration, delay) {
+		hide: function (duration, delay) {
 			return animateSimplify(element, 'fadeOut', duration, delay);
 		},
-		fadeIn: function(direction, duration, delay) {
-			if(isInList(directionFadeList, direction)) {
+		fadeIn: function (direction, duration, delay) {
+			if (isInList(directionFadeList, direction)) {
 				return animateSimplify(element, `fadeIn${direction}`, duration, delay);
 			} else {
 				console.error(`Direction not exist: ${direction}`);
@@ -403,8 +403,8 @@ function acTiny(selector) {
 				return null;
 			}
 		},
-		fadeOut: function(direction, duration, delay) {
-			if(isInList(directionFadeList, direction)) {
+		fadeOut: function (direction, duration, delay) {
+			if (isInList(directionFadeList, direction)) {
 				return animateSimplify(element, `fadeOut${direction}`, duration, delay);
 			} else {
 				console.error(`Direction not exist: ${direction}`);
@@ -412,8 +412,8 @@ function acTiny(selector) {
 				return null;
 			}
 		},
-		slideUp: function(direction, duration, delay) {
-			if(isInList(directionSlideList, direction)) {
+		slideUp: function (direction, duration, delay) {
+			if (isInList(directionSlideList, direction)) {
 				return animateSimplify(element, `slideIn${direction}`, duration, delay);
 			} else {
 				console.error(`Direction not exist: ${direction}`);
@@ -421,8 +421,8 @@ function acTiny(selector) {
 				return null;
 			}
 		},
-		slideDown: function(direction, duration, delay) {
-			if(isInList(directionSlideList, direction)) {
+		slideDown: function (direction, duration, delay) {
+			if (isInList(directionSlideList, direction)) {
 				return animateSimplify(element, `slideOut${direction}`, duration, delay);
 			} else {
 				console.error(`Direction not exist: ${direction}`);
@@ -430,17 +430,17 @@ function acTiny(selector) {
 				return null;
 			}
 		},
-		delay: function(ms) {
+		delay: function (ms) {
 			return new Promise(resolve => setTimeout(resolve, ms))
 		},
-		parent: function() {
+		parent: function () {
 			element = element.parentElement;
 			return this;
 		},
-		find: function(serachItems) {
+		find: function (serachItems) {
 			return element.querySelectorAll(serachItems);
 		},
-		eq: function(index) {
+		eq: function (index) {
 			if (index >= 0 && index < element.children.length) {
 				return element.children[index];
 			} else {
@@ -448,27 +448,27 @@ function acTiny(selector) {
 				return null;
 			}
 		},
-		then: function(funct) {
+		then: function (funct) {
 			funct();
 			return this;
 		},
 	};
 }
 
-acTiny.get		= (url, header, body) => { return fetchList.get(url, header, body) };
-acTiny.post		= (url, header, body) => { return fetchList.post(url, header, body) };
-acTiny.put		= (url, header, body) => { return fetchList.put(url, header, body) };
-acTiny.delete		= (url, header, body) => { return fetchList.delete(url, header, body) };
-acTiny.options		= (url, header, body) => { return fetchList.options(url, header, body) };
+acTiny.get = (url, header, body) => { return fetchList.get(url, header, body) };
+acTiny.post = (url, header, body) => { return fetchList.post(url, header, body) };
+acTiny.put = (url, header, body) => { return fetchList.put(url, header, body) };
+acTiny.delete = (url, header, body) => { return fetchList.delete(url, header, body) };
+acTiny.options = (url, header, body) => { return fetchList.options(url, header, body) };
 
-acTiny.getJSON		= (url, header, body) => { return fetchList.getJSON(url, header, body) };
-acTiny.postJSON		= (url, header, body) => { return fetchList.postJSON(url, header, body) };
-acTiny.putJSON		= (url, header, body) => { return fetchList.putJSON(url, header, body) };
-acTiny.deleteJSON	= (url, header, body) => { return fetchList.deleteJSON(url, header, body) };
-acTiny.optionsJSON	= (url, header, body) => { return fetchList.optionsJSON(url, header, body) };
+acTiny.getJSON = (url, header, body) => { return fetchList.getJSON(url, header, body) };
+acTiny.postJSON = (url, header, body) => { return fetchList.postJSON(url, header, body) };
+acTiny.putJSON = (url, header, body) => { return fetchList.putJSON(url, header, body) };
+acTiny.deleteJSON = (url, header, body) => { return fetchList.deleteJSON(url, header, body) };
+acTiny.optionsJSON = (url, header, body) => { return fetchList.optionsJSON(url, header, body) };
 
 /* INIT */
-if(!checkAnimateImport()) {
+if (!checkAnimateImport()) {
 	alert('Animate stylesheet is not loaded');
 }
 window.$ = acTiny;
