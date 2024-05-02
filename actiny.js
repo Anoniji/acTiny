@@ -177,6 +177,9 @@ function acTiny(selector) {
 		return null;
 	}
 
+	//# TODO: Add parameters check (if set and correct type)
+	//# TODO: Function for error printer (text + list)
+
 	return {
 		html: function (content = false) {
 			if (content) {
