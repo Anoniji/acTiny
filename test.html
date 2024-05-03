@@ -46,6 +46,8 @@
 		<div id="test_toggleClass" class="test_toggleClass2"></div>
 		<div id="test_hasClass" class="test_hasClass2"></div>
 		<div id="test_css" style="background: black; color: white;">test_css</div>
+		<div id="test_css_background"></div>
+		<div id="test_css_color"></div>
 		<div id="test_position">test_position</div>
 		<div id="test_width">test_width</div>
 		<div id="test_height">test_height</div>
@@ -140,8 +142,8 @@
 	console.log("#test_hasClass2", $("#test_hasClass").hasClass("test_hasClass2"));
 
 	//# test_css
-	console.log("#test_css_color", $("#test_css").css().color);
-	console.log("#test_css_background", $("#test_css").css().background);
+	$("#test_css_color").html($("#test_css").css().color);
+	$("#test_css_background").html($("#test_css").css().background);
 
 	//# test_position
 	const position = $("#test_position").position();
@@ -251,7 +253,7 @@
 	});
 
 	//# test_eq
-	$("div").eq(38).html('test_eq');
+	$("div").eq(40).html('test_eq');
 
 
 	//# test_get
