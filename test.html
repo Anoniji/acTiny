@@ -193,8 +193,10 @@
 	//# TODO: $("#test_submit").submit();
 
 	//# test_hover
+	var count = 0
 	$("#test_hover").hover(() => {
-		console.log('test_hover');
+		count += 1;
+		$("#test_hover").html(`test_hover: ${count}`);
 	});
 
 	//# TODO: test_on (fix linked with test_off)
