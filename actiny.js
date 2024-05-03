@@ -1,11 +1,11 @@
 /*!
- * acTiny JavaScript Library v0.1.0
+ * acTiny JavaScript Library v0.2.0
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
  * https://github.com/anoniji/acTiny/LICENSE
  *
- * Date: 2024-05-02
+ * Date: 2024-05-03
  */
 
 "use strict";
@@ -36,10 +36,12 @@ function fetchSimplify(typeRequete, url, header = {}, body, isJson = true) {
 			fetch(url, options).then(response => {
 				if (isJson) {
 					return response.json();
-				} else {
-					return response.text();
 				}
+				return response.text();
 			}).then(data => {
+				if (isJson) {
+					resolve(Object.entries(data));
+				}
 				resolve(data);
 			}).catch(error => {
 				console.error(error);
@@ -60,20 +62,28 @@ function animateSimplify(element, animation, duration = 1000, delay = 0) {
 		// Add Animate.css class and trigger animation
 		element.classList.add('animate__animated', `animate__${animation}`);
 
+		// Reset style
+		if (isInList(animateList, animation) && animation.includes("In")) {
+			element.style.display = '';
+			element.style.opacity = '';
+		}
+
 		// Remove initial styles after animation ends
 		const animationEndHandler = () => {
-			if (animation.includes("In")) {
-				element.style.display = '';
-				element.style.opacity = '';
-			} else {
-				element.style.display = 'none';
-				element.style.opacity = '0';
-			}			
+			if (isInList(animateList, animation)) {
+				if (animation.includes("In")) {
+					element.style.display = '';
+					element.style.opacity = '';
+				} else {
+					element.style.display = 'none';
+					element.style.opacity = '0';
+				}
+			}
 			element.style.animationDuration = '';
 			element.style.animationDelay = '';
 			element.classList.remove('animate__animated', `animate__${animation}`);
 			element.removeEventListener('animationend', animationEndHandler);
-			resolve(this);
+			resolve(element);
 		};
 		element.addEventListener('animationend', animationEndHandler);
 	});
@@ -87,6 +97,12 @@ function checkAnimateImport() {
 		}
 	}
 	return false;
+}
+
+function returnErrorWithList(title, set, list) {
+	console.error(`${title} not exist: ${set}`);
+	console.error(`${title} list     : ${list.join(', ')}`);
+	return null;
 }
 
 /* LIST */
@@ -162,26 +178,29 @@ function acTiny(selector) {
 		return null;
 	}
 
-	if (selector.startsWith("#")) {
+	if (typeof selector === "object") {
+		element = selector;
+		selector = 'this';		
+	} else if (selector.startsWith("#")) {
 		const id = selector.slice(1);
 		element = document.getElementById(id);
 	} else if (selector.startsWith(".")) {
 		const className = selector.slice(1);
 		element = document.getElementsByClassName(className)[0];
 	} else {
-		element = document.querySelector(selector);
+		element = document.querySelectorAll(selector);
+		if (element.length == 1) {
+			element = element[0]
+		}
 	}
 
 	if (!element) {
 		console.error(`Element not found with selector: ${selector}`);
-		return null;
 	}
-
-	//# TODO: Add parameters check (if set and correct type)
-	//# TODO: Function for error printer (text + list)
 
 	return {
 		html: function (content = false) {
+			if (!element) return this;
 			if (content) {
 				element.innerHTML = content;
 				return this;
@@ -189,6 +208,7 @@ function acTiny(selector) {
 			return element.innerHTML;
 		},
 		text: function (content = false) {
+			if (!element) return this;
 			if (content) {
 				element.textContent = content;
 				return this;
@@ -196,6 +216,7 @@ function acTiny(selector) {
 			return element.textContent;
 		},
 		val: function (content = false) {
+			if (!element) return this;
 			if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement || element instanceof HTMLSelectElement) {
 				if (content) {
 					element.value = content;
@@ -213,64 +234,74 @@ function acTiny(selector) {
 			}
 		},
 		after: function (elm, content) {
+			if (!element || !elm || !content) return this;
 			const newContent = document.createElement(elm);
 			newContent.textContent = content;
 
 			if (!element.nextElementSibling) {
 				return null;
 			}
-			element.parentNode.insertBefore(newContent, element.nextElementSibling);
+			element.parentNode.appendChild(newContent);
 			return this;
 		},
 		before: function (elm, content) {
+			if (!element || !elm || !content) return this;
 			const newContent = document.createElement(elm);
 			newContent.textContent = content;
 
 			if (!element.nextElementSibling) {
 				return null;
 			}
-			element.parentNode.insertAfter(newContent, element.nextElementSibling);
+			element.parentNode.prepend(newContent);
 			return this;
 		},
 		prepend: function (content) {
+			if (!element || !content) return this;
 			element.insertAdjacentHTML('afterbegin', content);
 			return this;
 		},
 		append: function (content) {
+			if (!element || !content) return this;
 			element.insertAdjacentHTML('beforeend', content);
 			return this;
 		},
 		empty: function () {
+			if (!element) return this;
 			element.parentNode.removeChild(element);
 			return this;
 		},
 		attr: function (attribute, content) {
+			if (!element || !attribute || !content) return this;
 			element.setAttribute(attribute, content);
 			return this;
 		},
 		removeAttr: function (attribute) {
+			if (!element || !attribute) return this;
 			element.removeAttribute(attribute);
 			return this;
 		},
 		addClass: function (className) {
+			if (!element || !className) return this;
 			element.classList.add(className);
 			return this;
 		},
 		removeClass: function (className) {
+			if (!element || !className) return this;
 			element.classList.remove(className);
 			return this;
 		},
 		toggleClass: function (className) {
+			if (!element || !className) return this;
 			element.classList.toggle(className);
 			return this;
 		},
 		hasClass: function (className) {
-			if (element.classList.contains(className)) {
-				return this
-			}
+			if (!element || !className) return this;
+			if (element.classList.contains(className)) return true;
 			return false;
 		},
 		css: function () {
+			if (!element) return this;
 			const styles = {};
 			const computedStyles = window.getComputedStyle(element);
 			for (const property in computedStyles) {
@@ -281,6 +312,7 @@ function acTiny(selector) {
 			return styles;
 		},
 		position: function () {
+			if (!element) return this;
 			const rect = element.getBoundingClientRect();
 			return {
 				x: rect.left + window.scrollX,
@@ -288,62 +320,75 @@ function acTiny(selector) {
 			};
 		},
 		width: function () {
+			if (!element) return this;
 			return element.offsetWidth;
 		},
 		height: function () {
+			if (!element) return this;
 			return element.offsetHeight;
 		},
-		prop: function (attribute, set) {
-			if (set) {
-				element.setAttribute(attribute);
+		prop: function (attribute, set = null) {
+			if (!element || !attribute || !(typeof set === 'boolean' || set === null)) return this;
+			if (set === null) {
+				element.setAttribute(attribute, '');
+			} else if (set) {
+				element.setAttribute(attribute, set);
 			} else {
 				element.removeAttribute(attribute);	
 			}
 			return this;
 		},
 		click: function (funct) {
+			if (!element || typeof funct !== "function") return this;
 			element.addEventListener('click', function () {
 				funct();
 			});
 			return this;
 		},
 		dblclick: function (funct) {
+			if (!element || typeof funct !== "function") return this;
 			element.addEventListener('dblclick', function () {
 				funct();
 			});
 			return this;
 		},
 		keydown: function (funct) {
+			if (!element || typeof funct !== "function") return this;
 			element.addEventListener('keydown', function () {
 				funct();
 			});
 			return this;
 		},
 		keyup: function (funct) {
+			if (!element || typeof funct !== "function") return this;
 			element.addEventListener('keyup', function () {
 				funct();
 			});
 			return this;
 		},
 		keypress: function (funct) {
+			if (!element || typeof funct !== "function") return this;
 			element.addEventListener('keypress', function () {
 				funct();
 			});
 			return this;
 		},
 		change: function (funct) {
+			if (!element || typeof funct !== "function") return this;
 			element.addEventListener('change', function () {
 				funct();
 			});
 			return this;
 		},
 		submit: function (funct) {
+			if (!element || typeof funct !== "function") return this;
 			element.addEventListener('submit', function () {
 				funct();
 			});
 			return this;
 		},
 		hover: function (funct) {
+			if (!element || typeof funct !== "function") return this;
 			element.addEventListener('mouseenter', function () {
 				funct();
 			});
@@ -353,107 +398,86 @@ function acTiny(selector) {
 			return this;
 		},
 		on: function (event, funct) {
+			if (!element || !event || typeof funct !== "function") return this;
 			if (isInList(eventList, event)) {
 				return element.addEventListener(event, function () {
 					funct();
 				});
-			} else {
-				console.error(`Event not exist: ${event}`);
-				console.error(`Event list     : ${eventList.join(', ')}`);
-				return null;
-			}
+			} else return returnErrorWithList('Event', event, eventList);
 		},
 		off: function (event, handler) {
+			console.log(typeof handler);
+			if (!element || !event || typeof handler !== "function") return this;
 			if (isInList(eventList, event)) {
 				element.removeEventListener(event, handler);
 				return this;
-			} else {
-				console.error(`Event not exist: ${event}`);
-				console.error(`Event list     : ${eventList.join(', ')}`);
-				return null;
-			}
+			} else return returnErrorWithList('Event', event, eventList);
 		},
 		effect: function (effect, duration, delay) {
+			if (!element || !effect) return this;
 			if (isInList(effectList, effect)) {
 				return animateSimplify(element, effect, duration, delay);
-			} else {
-				console.error(`Effect not exist: ${effect}`);
-				console.error(`Effect list     : ${effectList.join(', ')}`);
-				return null;
-			}
+			} else return returnErrorWithList('Effect', effect, effectList);
 		},
 		animate: function (animation, duration, delay) {
+			if (!element || !animation) return this;
 			if (isInList(animateList, animation)) {
 				return animateSimplify(element, animation, duration, delay);
-			} else {
-				console.error(`Animate not exist: ${animation}`);
-				console.error(`Animate list     : ${animateList.join(', ')}`);
-				return null;
-			}
+			} else return returnErrorWithList('Animate', animation, animateList);
 		},
 		show: function (duration, delay) {
+			if (!element) return this;
 			return animateSimplify(element, 'fadeIn', duration, delay);
 		},
 		hide: function (duration, delay) {
+			if (!element) return this;
 			return animateSimplify(element, 'fadeOut', duration, delay);
 		},
-		fadeIn: function (direction, duration, delay) {
+		fadeIn: function (direction = "Up", duration, delay) {
+			if (!element) return this;
 			if (isInList(directionFadeList, direction)) {
 				return animateSimplify(element, `fadeIn${direction}`, duration, delay);
-			} else {
-				console.error(`Direction not exist: ${direction}`);
-				console.error(`Direction list     : ${directionFadeList.join(', ')}`);
-				return null;
-			}
+			} else return returnErrorWithList('Direction', direction, directionFadeList);
 		},
-		fadeOut: function (direction, duration, delay) {
+		fadeOut: function (direction = "Up", duration, delay) {
+			if (!element) return this;
 			if (isInList(directionFadeList, direction)) {
 				return animateSimplify(element, `fadeOut${direction}`, duration, delay);
-			} else {
-				console.error(`Direction not exist: ${direction}`);
-				console.error(`Direction list     : ${directionFadeList.join(', ')}`);
-				return null;
-			}
+			} else return returnErrorWithList('Direction', direction, directionFadeList);
 		},
-		slideUp: function (direction, duration, delay) {
+		slideUp: function (direction = "Up", duration, delay) {
+			if (!element) return this;
 			if (isInList(directionSlideList, direction)) {
 				return animateSimplify(element, `slideIn${direction}`, duration, delay);
-			} else {
-				console.error(`Direction not exist: ${direction}`);
-				console.error(`Direction list     : ${directionSlideList.join(', ')}`);
-				return null;
-			}
+			} else return returnErrorWithList('Direction', direction, directionSlideList);
 		},
-		slideDown: function (direction, duration, delay) {
+		slideDown: function (direction = "Up", duration, delay) {
+			if (!element) return this;
 			if (isInList(directionSlideList, direction)) {
 				return animateSimplify(element, `slideOut${direction}`, duration, delay);
-			} else {
-				console.error(`Direction not exist: ${direction}`);
-				console.error(`Direction list     : ${directionSlideList.join(', ')}`);
-				return null;
-			}
+			} else return returnErrorWithList('Direction', direction, directionSlideList);
 		},
-		delay: function (ms) {
-			return new Promise(resolve => setTimeout(resolve, ms))
+		delay: function (ms = 300) {
+			if (!element) return this;
+			return new Promise(resolve => setTimeout(() => { resolve(element) }, ms))
 		},
 		parent: function () {
+			if (!element) return this;
 			element = element.parentElement;
 			return this;
 		},
 		find: function (serachItems) {
+			if (!element) return this;
 			return element.querySelectorAll(serachItems);
 		},
 		eq: function (index) {
-			if (index >= 0 && index < element.children.length) {
-				return element.children[index];
+			if (!element || !index || typeof index !== 'number') return this;
+			if (index >= 0 && index < element.length) {
+				return $(element[index]);
 			} else {
 				console.error('Invalid index:', index);
 				return null;
 			}
-		},
-		then: function (funct) {
-			funct();
-			return this;
 		},
 	};
 }

@@ -1,46 +1,267 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>acTiny Demo</title>
-	<link rel="stylesheet" href="./animate.min.css"	/>
+	<link rel="stylesheet" href="./animate.min.css" />
 	<script type="text/javascript" src="actiny.js"></script>
-</head>
-<body>
+	<style type="text/css">
+		body {
+			background-color: #fdf7f7;
+			padding: 8px;
+			font-family: Arial, Helvetica, sans-serif;
+		}
 
-	<div id="testid" style="opacity: 0;">TEST ID</div>
-	<div class="testclass">TEST CLASS</div>
+		div,
+		p,
+		input {
+			user-select: none;
+			margin: 8px;
+			padding: 8px;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>acTiny - Demo page</h1>
+	<div id="test_total"></div>
+	<section>
+		<div id="test_html"></div>
+		<div id="test_text"></div>
+		<label for="test_val1">
+			<input type="text" title="test_val1" id="test_val1" value="test_val1" />
+		</label>
+		<div id="test_val2">test_val2</div>
+		<div id="test_after"></div>
+		<div id="test_before"></div>
+		<div id="test_prepend"></div>
+		<div id="test_append"></div>
+		<div id="test_empty">test_empty</div>
+		<div id="test_attr"></div>
+		<div id="test_removeAttr" class="test_removeAttr"></div>
+		<div id="test_addClass"></div>
+		<div id="test_removeClass" class="test_removeClass"></div>
+		<div id="test_toggleClass" class="test_toggleClass2"></div>
+		<div id="test_hasClass" class="test_hasClass2"></div>
+		<div id="test_css" style="background: black; color: white;">test_css</div>
+		<div id="test_position">test_position</div>
+		<div id="test_width">test_width</div>
+		<div id="test_height">test_height</div>
+		<div id="test_prop1">test_prop1</div>
+		<div id="test_prop2">test_prop2</div>
+		<div id="test_prop3">test_prop3</div>
+		<div id="test_click">test_click</div>
+		<div id="test_dblclick">test_dblclick</div>
+		<label for="test_keydown">
+			<input type="text" title="test_keydown" id="test_keydown" value="test_keydown" />
+		</label>
+
+		<label for="test_keyup">
+			<input type="text" title="test_keyup" id="test_keyup" value="test_keyup" />
+		</label>
+
+		<label for="test_keypress">
+			<input type="text" title="test_keypress" id="test_keypress" value="test_keypress" />
+		</label>
+
+		<label for="test_change">
+			<input type="text" title="test_change" id="test_change" value="test_change" />
+		</label>
+		<div id="test_submit"></div>
+		<div id="test_hover">test_hover</div>
+		<div id="test_on">test_on</div>
+		<div id="test_off">test_off</div>
+		<div id="test_effect">test_effect</div>
+		<div id="test_animate">test_animate</div>
+		<div id="test_show" style="display: none;">test_show</div>
+		<div id="test_hide">test_hide</div>
+		<div id="test_fadeIn" style="display: none;">test_fadeIn</div>
+		<div id="test_fadeOut">test_fadeOut</div>
+		<div id="test_slideUp">test_slideUp</div>
+		<div id="test_slideDown" style="display: none;">test_slideDown</div>
+		<div id="test_delay"></div>
+		<div id="test_parent">test_parent</div>
+		<div id="test_find">test_find</div>
+		<div id="test_eq"></div>
+		<div id="test_get"></div>
+		<div id="test_getJSON"></div>
+	</section>
 
 </body>
 
 <script type="text/javascript">
-	function toto() {
-		console.log('bodytoto');
-	}
+	//# test_html
+	$("#test_html").html("test_html");
+	console.log("#test_html", $("#test_html").html());
 
-	$('#testid').delay(5000).then(() => {
-		$('#testid').html('test1').html('<div>test3</div>').append('<0>').prepend('<0>').animate('bounceIn').then(() => {
-			$('#testid').animate('bounceOut');
-			console.log('end');
+	//# test_text
+	$("#test_text").text("test_text");
+	console.log("#test_text", $("#test_text").text());
+
+	//# test_val
+	console.log("#test_val1", $("#test_val1").val());
+	console.log("#test_val2", $("#test_val2").val());
+
+	//# test_after
+	$("#test_after").after("p", "test_after");
+
+	//# test_before
+	$("#test_before").before("p", "test_before");
+
+	//# test_prepend
+	$("#test_prepend").prepend("test_prepend");
+
+	//# test_append
+	$("#test_append").append("test_append");
+
+	//# test_append
+	$("#test_empty").empty();
+
+	//# test_attr
+	$("#test_attr").attr("class", "test_attr");
+
+	//# test_removeAttr
+	$("#test_removeAttr").removeAttr("class");
+
+	//# test_addClass
+	$("#test_addClass").addClass("test_addClass");
+
+	//# test_removeClass
+	$("#test_removeClass").removeClass();
+
+	//# test_toggleClass
+	$("#test_toggleClass").toggleClass("test_toggleClass1");
+	$("#test_toggleClass").toggleClass("test_toggleClass2");
+
+	//# test_hasClass
+	console.log("#test_hasClass1", $("#test_hasClass").hasClass("test_hasClass1"));
+	console.log("#test_hasClass2", $("#test_hasClass").hasClass("test_hasClass2"));
+
+	//# test_css
+	console.log("#test_css_color", $("#test_css").css().color);
+	console.log("#test_css_background", $("#test_css").css().background);
+
+	//# test_position
+	const position = $("#test_position").position();
+	const x = position.x
+	const y = position.y;
+	$("#test_position").html(x + "-" + y);
+
+	//# test_width
+	$("#test_width").html($("#test_width").width());
+
+	//# test_height
+	$("#test_height").html($("#test_height").height());
+
+	//# test_prop
+	$("#test_prop1").prop("disabled");
+	$("#test_prop2").prop("disabled", true);
+	$("#test_prop3").prop("disabled", false);
+
+	//# test_click
+	$("#test_click").click(() => {
+		alert('test_click');
+	});
+
+	//# test_dblclick
+	$("#test_dblclick").dblclick(() => {
+		alert('test_dblclick');
+	});
+
+	//# test_keydown
+	$("#test_keydown").keydown(() => {
+		alert('test_keydown');
+	});
+
+	//# test_keyup
+	$("#test_keyup").keyup(() => {
+		alert('test_keyup');
+	});
+
+	//# test_keypress
+	$("#test_keypress").keypress(() => {
+		alert('test_keypress');
+	});
+
+	//# test_change
+	$("#test_change").change(() => {
+		alert('test_change');
+	});
+
+	//# TODO: $("#test_submit").submit();
+
+	//# test_hover
+	$("#test_hover").hover(() => {
+		console.log('test_hover');
+	});
+
+	//# TODO: test_on (fix linked with test_off)
+	test_on = $("#test_on").on("click", () => {
+		alert('test_on');
+	});
+
+	//# TODO: $("#test_off").off("click", test_on);
+
+	//# test_effect
+	$("#test_effect").effect('bounce');
+
+	//# test_animate
+	$("#test_animate").animate('zoomInDown');
+
+	//# test_show
+	$("#test_show").show();
+
+	//# test_hide
+	$("#test_hide").hide();
+
+	//# test_fadeIn
+	$("#test_fadeIn").fadeIn();
+
+	//# test_fadeOut
+	$("#test_fadeOut").fadeOut();
+
+	//# test_slideUp
+	$("#test_slideUp").slideUp();
+
+	//# test_slideDown
+	$("#test_slideDown").slideDown();
+
+	//# test_delay
+	$("#test_delay").delay(3000).then((cur) => {
+		$(cur).html("test_delay");
+	});
+
+	//# test_total
+	$('#test_total').delay(5000).then((cur) => {
+		$(cur).html('test1').html('<div>=> test_total</div>').append('<///>').prepend('<///>').animate('bounceIn').then((cur) => {
+			$(cur).animate('bounceOut');
 		});
 	})
 
-	console.log($('.testclass').html('test2').text());
-	$('body').attr('onclick', 'toto()');
+	//# test_parent
+	$("#test_parent").parent().append('<div>#test_parent</div>');
 
-	$('.testclass').on('dblclick', function() {
-		alert('clicked');
+	//# test_find
+	$(document).find('p').forEach(item => {
+		$("#test_find").append(` - ${$(item).html()}`);
 	});
 
-	$('.testclass').fadeIn('RightBig', 3000);
+	//# test_eq
+	$("div").eq(38).html('test_eq');
 
+
+	//# test_get
 	$.get('https://jsonplaceholder.typicode.com/todos/1').then(data => {
-		console.log('LOG', data);
+		$("#test_get").html(data);
 	});
 
+	//# test_getJSON
 	$.getJSON('https://jsonplaceholder.typicode.com/todos/1').then(data => {
-		console.log('LOG', data);
+		data.forEach(([key, value]) => {
+			$("#test_getJSON").append(`<div>${key}: ${value}</div>`);
+		});
 	});
 </script>
 
