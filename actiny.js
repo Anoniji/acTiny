@@ -485,6 +485,7 @@ function acTiny(selector) {
 
 			return this;
 		},
+		//# TODO: Sortable: Enables sorting and reordering of lists or groups of elements.
 		resizable: function () {
 			if (!element) return this;
 
@@ -526,6 +527,17 @@ function acTiny(selector) {
 
 			return this;
 		},
+		//# TODO: Selectable: Enables selecting and manipulating groups of elements.
+		//# TODO: Accordion: Creates expandable and collapsible content sections.
+		//# TODO: Autocomplete: Offers search suggestions as users type.
+		//# TODO: Button: Provides enhanced and customizable buttons.
+		//# TODO: Date picker: Allows users to select dates from a calendar interface.
+		//# TODO: Dialog: Creates modal dialog boxes for user interactions.
+		//# TODO: Menu: Provides dropdown and hierarchical menus for navigation.
+		//# TODO: Progress bar: Displays visual progress indicators for loading or tasks.
+		//# TODO: Slider: Enables users to select values along a range using a slider control.
+		//# TODO: Tabs: Creates tabbed interfaces for switching between content sections.
+		//# TODO: Tooltip: Displays informational popups when hovering over elements.
 		delay: function (ms = 300) {
 			if (!element) return this;
 			return new Promise(resolve => setTimeout(() => { resolve(element) }, ms))
