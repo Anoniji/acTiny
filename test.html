@@ -22,6 +22,17 @@
 			margin: 8px;
 			padding: 8px;
 		}
+
+		.drag_on {
+			cursor: 'all-scroll';
+		}
+
+		#test_draggable, #test_resizable {
+			width: 150px;
+			height: 80px;
+			border: 2px solid #000;
+		}
+
 	</style>
 </head>
 
@@ -86,6 +97,9 @@
 		<div id="test_fadeOut">test_fadeOut</div>
 		<div id="test_slideUp">test_slideUp</div>
 		<div id="test_slideDown" style="display: none;">test_slideDown</div>
+		<div id="test_draggable">test_draggable</div>
+		<br><br><br><br><br><br>
+		<div id="test_resizable">test_resizable</div>
 		<div id="test_delay"></div>
 		<div id="test_parent">test_parent</div>
 		<div id="test_find">test_find</div>
@@ -239,6 +253,12 @@
 	//# test_slideDown
 	$("#test_slideDown").slideDown();
 
+	//# test_draggable
+	$("#test_draggable").draggable();
+
+	//# test_resizable
+	$("#test_resizable").resizable();
+
 	//# test_delay
 	$("#test_delay").delay(3000).then((cur) => {
 		$(cur).html("test_delay");
@@ -260,7 +280,7 @@
 	});
 
 	//# test_eq
-	$("div").eq(39).html('test_eq');
+	$("div").eq(41).html('test_eq');
 
 	//# test_get
 	$.get('https://jsonplaceholder.typicode.com/todos/1').then(data => {

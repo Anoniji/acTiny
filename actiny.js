@@ -1,5 +1,5 @@
 /*!
- * acTiny JavaScript Library v0.3.0
+ * acTiny JavaScript Library v0.3.1
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
@@ -455,6 +455,76 @@ function acTiny(selector) {
 			if (isInList(directionSlideList, direction)) {
 				return animateSimplify(element, `slideOut${direction}`, duration, delay);
 			} else return returnErrorWithList('Direction', direction, directionSlideList);
+		},
+		draggable: function () {
+			if (!element) return this;
+
+			let offsetX = 0,
+				offsetY = 0,
+				isDragging = false;
+
+			element.addEventListener('mousedown', (event) => {
+				element.classList.add('drag_on');
+				element.classList.remove('drag_off');
+				isDragging = true;
+				offsetX = event.clientX - element.offsetLeft;
+				offsetY = event.clientY - element.offsetTop;
+			});
+			element.addEventListener('mousemove', (event) => {
+				if (isDragging) {
+					element.style.left = event.clientX - offsetX + 'px';
+					element.style.top = event.clientY - offsetY + 'px';
+				}
+			});
+			element.addEventListener('mouseup', () => {
+				element.classList.add('drag_off');
+				element.classList.remove('drag_on');
+				isDragging = false;
+			});
+			element.style.position = 'absolute';
+
+			return this;
+		},
+		resizable: function () {
+			if (!element) return this;
+
+			let initialX = 0,
+				initialY = 0,
+				isResizing = false;
+
+			element.addEventListener('mousedown', (event) => {
+				element.classList.add('resize_on');
+				element.classList.remove('resize_off');
+				isResizing = true;
+
+				const rect = element.getBoundingClientRect();
+				const border_width = parseFloat(window.getComputedStyle(element, null).getPropertyValue('border-width'));
+				const paddingTop = parseFloat(window.getComputedStyle(element, null).getPropertyValue('padding-top'));
+				const paddingRight = parseFloat(window.getComputedStyle(element, null).getPropertyValue('padding-right'));
+				const paddingBottom = parseFloat(window.getComputedStyle(element, null).getPropertyValue('padding-bottom'));
+				const paddingLeft = parseFloat(window.getComputedStyle(element, null).getPropertyValue('padding-left'));
+
+				initialX = rect.left + paddingLeft + paddingRight + border_width;
+				initialY = rect.top + paddingTop + paddingBottom + border_width;
+			});
+			element.addEventListener('mousemove', (event) => {
+				if (isResizing) {
+					const newWidth = event.clientX - initialX;
+					const newHeight = event.clientY - initialY;
+
+					if (newWidth >= 0 && newHeight >= 0) {
+						element.style.width = Math.floor(newWidth) + 'px';
+						element.style.height = Math.floor(newHeight) + 'px';
+					}
+				}
+			});
+			element.addEventListener('mouseup', () => {
+				element.classList.add('resize_off');
+				element.classList.remove('resize_on');
+				isResizing = false;
+			});
+
+			return this;
 		},
 		delay: function (ms = 300) {
 			if (!element) return this;
