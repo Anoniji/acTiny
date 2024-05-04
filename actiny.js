@@ -1,11 +1,11 @@
 /*!
- * acTiny JavaScript Library v0.2.0
+ * acTiny JavaScript Library v0.3.0
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
  * https://github.com/anoniji/acTiny/LICENSE
  *
- * Date: 2024-05-03
+ * Date: 2024-05-04
  */
 
 "use strict";
@@ -40,7 +40,7 @@ function fetchSimplify(typeRequete, url, header = {}, body, isJson = true) {
 				return response.text();
 			}).then(data => {
 				if (isJson) {
-					resolve(Object.entries(data));
+					resolve(data);
 				}
 				resolve(data);
 			}).catch(error => {
@@ -382,7 +382,8 @@ function acTiny(selector) {
 		},
 		submit: function (funct) {
 			if (!element || typeof funct !== "function") return this;
-			element.addEventListener('submit', function () {
+			element.addEventListener('submit', function (event) {
+				event.preventDefault();
 				funct();
 			});
 			return this;
@@ -400,16 +401,14 @@ function acTiny(selector) {
 		on: function (event, funct) {
 			if (!element || !event || typeof funct !== "function") return this;
 			if (isInList(eventList, event)) {
-				return element.addEventListener(event, function () {
-					funct();
-				});
+				element.addEventListener(event, funct);
+				return this
 			} else return returnErrorWithList('Event', event, eventList);
 		},
-		off: function (event, handler) {
-			console.log(typeof handler);
-			if (!element || !event || typeof handler !== "function") return this;
+		off: function (event, funct) {
+			if (!element || !event || typeof funct !== "function") return this;
 			if (isInList(eventList, event)) {
-				element.removeEventListener(event, handler);
+				element.removeEventListener(event, funct);
 				return this;
 			} else return returnErrorWithList('Event', event, eventList);
 		},

@@ -16,7 +16,8 @@
 
 		div,
 		p,
-		input {
+		input,
+		button {
 			user-select: none;
 			margin: 8px;
 			padding: 8px;
@@ -71,7 +72,9 @@
 		<label for="test_change">
 			<input type="text" title="test_change" id="test_change" value="test_change" />
 		</label>
-		<div id="test_submit"></div>
+		<form id="test_submit">
+			<button type="submit">test_submit</button>
+		</form>
 		<div id="test_hover">test_hover</div>
 		<div id="test_on">test_on</div>
 		<div id="test_off">test_off</div>
@@ -192,7 +195,10 @@
 		alert('test_change');
 	});
 
-	//# TODO: $("#test_submit").submit();
+	//# test_submit
+	$("#test_submit").submit(() => {
+		alert('test_submit');
+	});
 
 	//# test_hover
 	var count = 0
@@ -201,12 +207,13 @@
 		$("#test_hover").html(`test_hover: ${count}`);
 	});
 
-	//# TODO: test_on (fix linked with test_off)
-	test_on = $("#test_on").on("click", () => {
-		alert('test_on');
-	});
+	function fn_test_on() { alert('test_on'); }
 
-	//# TODO: $("#test_off").off("click", test_on);
+	//# test_on
+	$("#test_on").on("click", fn_test_on);
+
+	//# test_off
+	$("#test_off").on("click", fn_test_on).off("click", fn_test_on);
 
 	//# test_effect
 	$("#test_effect").effect('bounce');
@@ -253,8 +260,7 @@
 	});
 
 	//# test_eq
-	$("div").eq(40).html('test_eq');
-
+	$("div").eq(39).html('test_eq');
 
 	//# test_get
 	$.get('https://jsonplaceholder.typicode.com/todos/1').then(data => {
@@ -263,7 +269,7 @@
 
 	//# test_getJSON
 	$.getJSON('https://jsonplaceholder.typicode.com/todos/1').then(data => {
-		data.forEach(([key, value]) => {
+		Object.entries(data).forEach(([key, value]) => {
 			$("#test_getJSON").append(`<div>${key}: ${value}</div>`);
 		});
 	});
