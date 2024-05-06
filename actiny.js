@@ -1,5 +1,5 @@
 /*!
- * acTiny JavaScript Library v0.3.1
+ * acTiny JavaScript Library v0.3.2
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
@@ -14,6 +14,17 @@
 /* FUNCTIONS */
 function isInList(list, value) {
 	return list.indexOf(value) !== -1;
+}
+
+function escapeBasicHTML(htmlString) {
+	const map = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&apos;'
+	};
+	return htmlString.replace(/[&<>"']/g, char => map[char]);
 }
 
 function fetchSimplify(typeRequete, url, header = {}, body, isJson = true) {
@@ -530,11 +541,31 @@ function acTiny(selector) {
 		//# TODO: Selectable: Enables selecting and manipulating groups of elements.
 		//# TODO: Accordion: Creates expandable and collapsible content sections.
 		//# TODO: Autocomplete: Offers search suggestions as users type.
-		//# TODO: Button: Provides enhanced and customizable buttons.
+		button: function (btn_text, funct = false) {
+			if (!element || !btn_text) return this;
+			const button = document.createElement('button');
+			button.innerHTML = escapeBasicHTML(btn_text);
+			if(funct) {
+				button.addEventListener('click', function () {
+					funct();
+				});
+			}
+			element.appendChild(button);
+			return this;
+		},
 		//# TODO: Date picker: Allows users to select dates from a calendar interface.
 		//# TODO: Dialog: Creates modal dialog boxes for user interactions.
 		//# TODO: Menu: Provides dropdown and hierarchical menus for navigation.
-		//# TODO: Progress bar: Displays visual progress indicators for loading or tasks.
+		progressbar: function (pct = 0) {
+			if (!element) return this;
+			let element_progress = element.querySelector('progress');
+			if (element_progress) {
+				element_progress.value = pct;
+			} else {
+				element.innerHTML = `<progress min="0" value="${pct}" max="100"></progress>`;
+			}
+			return this;
+		},
 		//# TODO: Slider: Enables users to select values along a range using a slider control.
 		//# TODO: Tabs: Creates tabbed interfaces for switching between content sections.
 		//# TODO: Tooltip: Displays informational popups when hovering over elements.

@@ -99,7 +99,19 @@
 		<div id="test_slideDown" style="display: none;">test_slideDown</div>
 		<div id="test_draggable">test_draggable</div>
 		<br><br><br><br><br><br>
+		<!-- Sortable: Enables sorting and reordering of lists or groups of elements. -->
 		<div id="test_resizable">test_resizable</div>
+		<!-- Selectable: Enables selecting and manipulating groups of elements. -->
+		<!-- Accordion: Creates expandable and collapsible content sections. -->
+		<!-- Autocomplete: Offers search suggestions as users type. -->
+		<div id="test_button"></div>
+		<!-- Date picker: Allows users to select dates from a calendar interface. -->
+		<!-- Dialog: Creates modal dialog boxes for user interactions. -->
+		<!-- Menu: Provides dropdown and hierarchical menus for navigation. -->
+		<div id="test_progressbar">test_progressbar</div>
+		<!-- Slider: Enables users to select values along a range using a slider control. -->
+		<!-- Tabs: Creates tabbed interfaces for switching between content sections. -->
+		<!-- Tooltip: Displays informational popups when hovering over elements. -->
 		<div id="test_delay"></div>
 		<div id="test_parent">test_parent</div>
 		<div id="test_find">test_find</div>
@@ -259,6 +271,19 @@
 	//# test_resizable
 	$("#test_resizable").resizable();
 
+	//# test_button
+	$("#test_button").button('test_button', () => { alert('test_button'); });
+
+	//# test_progressbar
+	$("#test_progressbar").progressbar();
+	$("#test_progressbar").delay(3000).then((cur) => {
+		$(cur).progressbar(50).delay(3000).then((cur) => {
+			$(cur).progressbar(80).delay(3000).then((cur) => {
+				$(cur).progressbar(100);
+			})
+		})
+	});
+
 	//# test_delay
 	$("#test_delay").delay(3000).then((cur) => {
 		$(cur).html("test_delay");
@@ -280,7 +305,7 @@
 	});
 
 	//# test_eq
-	$("div").eq(41).html('test_eq');
+	$("div").eq(43).html('test_eq');
 
 	//# test_get
 	$.get('https://jsonplaceholder.typicode.com/todos/1').then(data => {
