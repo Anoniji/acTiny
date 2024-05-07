@@ -1,5 +1,5 @@
 /*!
- * acTiny JavaScript Library v0.4.0
+ * acTiny JavaScript Library v0.5.0
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
@@ -769,6 +769,51 @@ function acTiny(selector) {
 			}
 			
 			return this;
+		},
+		transcript: function (lang = "en-US", startText = "Start recording", stopText = "Stop recording", placeHolder = "Enter your text here") {
+			if (!element) return this;
+
+			// Add button
+			const createButton = document.createElement('button');
+			createButton.textContent = startText;
+			element.appendChild(createButton);
+
+			// Add input
+			const createInput = document.createElement('input');
+			createInput.type = 'text';
+			createInput.placeholder = placeHolder;
+			element.appendChild(createInput);
+
+			let recorder;
+			let recognition;
+
+			createButton.addEventListener('click', () => {
+				if (recorder) {
+					recorder.stop();
+					recognition.stop();
+					createInput.value = '';
+					createButton.textContent = startText;
+					return;
+				}
+
+	            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+					recorder = new MediaRecorder(stream);
+					recognition = new webkitSpeechRecognition();
+					recognition.lang = lang;
+					recognition.continuous = true;
+					recognition.interimResults = true;
+
+					recognition.addEventListener('result', (event) => {
+						const lastResult = event.results[event.resultIndex];
+						const transcript = lastResult[0].transcript;
+						createInput.value = transcript;
+					});
+
+					recognition.start();
+					recorder.start();
+					createButton.textContent = stopText;
+                });
+	        });
 		},
 		delay: function (ms = 300) {
 			if (!element) return this;
