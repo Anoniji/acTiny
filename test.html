@@ -99,22 +99,43 @@
 		<div id="test_slideDown" style="display: none;">test_slideDown</div>
 		<div id="test_draggable">test_draggable</div>
 		<br><br><br><br><br><br>
-		<!-- Sortable: Enables sorting and reordering of lists or groups of elements. -->
 		<div id="test_resizable">test_resizable</div>
-		<!-- Selectable: Enables selecting and manipulating groups of elements. -->
-		<!-- Accordion: Creates expandable and collapsible content sections. -->
 		<div>
 			<input type="text" id="test_autocomplete" />
 		</div>
 		<div id="test_button"></div>
-		<!-- Date picker: Allows users to select dates from a calendar interface. -->
 		<div id="test_dialog">
 			<button id="btn_test_dialog">Open diag</button>
 		</div>
-		<!-- Menu: Provides dropdown and hierarchical menus for navigation. -->
+		<nav>
+			<ul id="test_menu">
+				<li>
+					<a href="#">Item 1</a>
+					<ul class="sub-menu">
+						<li><a href="#">Sub Item 1</a></li>
+						<li><a href="#">Sub Item 2</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">Item 2</a>
+				</li>
+				<li>
+					<a href="#">Item 3</a>
+					<ul class="sub-menu">
+						<li>
+							<a href="#">Sub Item 3.1</a>
+							<ul class="sub-menu">
+								<li><a href="#">Sub Sub Item 1</a></li>
+								<li><a href="#">Sub Sub Item 2</a></li>
+							</ul>
+						</li>
+						<li><a href="#">Sub Item 3.2</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
 		<div id="test_progressbar">test_progressbar</div>
-		<!-- Slider: Enables users to select values along a range using a slider control. -->
-		<!-- Tabs: Creates tabbed interfaces for switching between content sections. -->
+		<div id="test_slider"></div>
 		<div id="test_tabs">
 			<nav>
 				<ul>
@@ -299,6 +320,9 @@
 	$("#btn_test_dialog").click(() => {
 		$("#test_dialog").dialog("Modal Title", "This is the modal content.", "Close Modal", true);
 	});
+
+	//# test_menu
+	$("#test_menu").menu();
 	
 	//# test_progressbar
 	$("#test_progressbar").progressbar();
@@ -309,6 +333,9 @@
 			})
 		})
 	});
+
+	//# test_slider
+	$("#test_slider").slider();
 
 	//# test_tabs
 	$("#test_tabs").tabs("sec_1");
@@ -337,7 +364,7 @@
 	});
 
 	//# test_eq
-	$("div").eq(48).html("test_eq");
+	$("div").eq(49).html("test_eq");
 
 	//# test_get
 	$.get("https://jsonplaceholder.typicode.com/todos/1").then(data => {

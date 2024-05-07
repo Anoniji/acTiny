@@ -1,5 +1,5 @@
 /*!
- * acTiny JavaScript Library v0.3.3
+ * acTiny JavaScript Library v0.4.0
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
@@ -496,7 +496,6 @@ function acTiny(selector) {
 
 			return this;
 		},
-		//# TODO: Sortable: Enables sorting and reordering of lists or groups of elements.
 		resizable: function () {
 			if (!element) return this;
 
@@ -538,8 +537,6 @@ function acTiny(selector) {
 
 			return this;
 		},
-		//# TODO: Selectable: Enables selecting and manipulating groups of elements.
-		//# TODO: Accordion: Creates expandable and collapsible content sections.
 		autocomplete: function (suggestions) {
 			if (!element || !suggestions || typeof element !== "object" || element.tagName.toLowerCase() !== "input") return this;
 			const suggestionsList = document.createElement("ul");
@@ -572,44 +569,43 @@ function acTiny(selector) {
 			element.appendChild(button);
 			return this;
 		},
-		//# TODO: Date picker: Allows users to select dates from a calendar interface.
 		dialog: function (title, content, closeButtonLabel, overlay = false) {
 			if (!element || !title || !content || !closeButtonLabel) return this;
 
 			// Check if the modal has already been created
-			const element_element = element.querySelector('.modal')
+			const element_element = element.querySelector(".modal")
 			if (element_element) {
-				element_element.style.display = 'block';
+				element_element.style.display = "block";
 				return this;
 			}
 
 			// Function to create the modal container
 			function createModalContainer() {
-				const modalContainer = document.createElement('div');
-				modalContainer.classList.add('modal');
+				const modalContainer = document.createElement("div");
+				modalContainer.classList.add("modal");
 				element.appendChild(modalContainer);
 				return modalContainer;
 			}
 			const modalContainer = createModalContainer();
 
 			// Create modal content
-			const modalContent = document.createElement('div');
-			modalContent.classList.add('modal-content');
+			const modalContent = document.createElement("div");
+			modalContent.classList.add("modal-content");
 
 			// Create modal title
-			const modalTitle = document.createElement('h2');
+			const modalTitle = document.createElement("h2");
 			modalTitle.textContent = title;
 			modalContent.appendChild(modalTitle);
 
 			// Create modal body content
-			const modalBody = document.createElement('p');
+			const modalBody = document.createElement("p");
 			modalBody.textContent = content;
 			modalContent.appendChild(modalBody);
 
 			// Create close button
-			const closeButton = document.createElement('button');
-			closeButton.textContent = closeButtonLabel || 'Close';
-			closeButton.addEventListener('click', hideModal);
+			const closeButton = document.createElement("button");
+			closeButton.textContent = closeButtonLabel || "Close";
+			closeButton.addEventListener("click", hideModal);
 			modalContent.appendChild(closeButton);
 
 			// Append modal content to container
@@ -617,35 +613,59 @@ function acTiny(selector) {
 
 			// Create modal overlay (if createOverlay is true)
 			if (overlay) {
-				const modalOverlay = document.createElement('div');
-				modalOverlay.classList.add('modal-overlay');
+				const modalOverlay = document.createElement("div");
+				modalOverlay.classList.add("modal-overlay");
 				modalContent.parentNode.appendChild(modalOverlay);
 			}
 
-			const modal = element.querySelector('.modal');
+			const modal = element.querySelector(".modal");
 
 			// Function to show the modal
 			function showModal() {
-				modal.style.display = 'block';
+				modal.style.display = "block";
 			}
 
 			// Function to hide the modal
 			function hideModal() {
-				modal.style.display = 'none';
+				modal.style.display = "none";
 			}
 
 			// Add click event listener to the close button
-			closeButton.addEventListener('click', hideModal);
+			closeButton.addEventListener("click", hideModal);
 
 			// Add event listener to open the modal from a button or link
-			const openModalButton = element.querySelector('.open-modal-button');
+			const openModalButton = element.querySelector(".open-modal-button");
 			if (openModalButton) {
-				openModalButton.addEventListener('click', showModal);
+				openModalButton.addEventListener("click", showModal);
 			}
 
 			return this;
 		},
-		//# TODO: Menu: Provides dropdown and hierarchical menus for navigation.
+		menu: function () {
+			if (!element) return this;
+			element.querySelectorAll("li").forEach(listItem => {
+				const subMenu = listItem.querySelector(".sub-menu");
+				if (subMenu) {
+					subMenu.style.display = "none";
+					const toggleButton = listItem.querySelector("a");
+
+					toggleButton.addEventListener("click", (event) => {
+						// Prevent default anchor link behavior
+						event.preventDefault(); 
+						// Toggle active class for submenu visibility
+						subMenu.style.display = "block"; 
+					});
+				}
+			});
+
+			element.addEventListener("mouseleave", () => {
+				element.querySelectorAll(".sub-menu").forEach(sub => {
+					sub.style.display = "none"; 
+				});
+			});
+
+			return this;
+		},
 		progressbar: function (pct = 0) {
 			if (!element) return this;
 			let element_progress = element.querySelector("progress");
@@ -656,7 +676,33 @@ function acTiny(selector) {
 			}
 			return this;
 		},
-		//# TODO: Slider: Enables users to select values along a range using a slider control.
+		slider: function (minValue = 0, maxValue = 100, initialValue = 0) {
+			if (!element) return this;
+
+			// Create slider input element
+			const slider = document.createElement("input");
+			slider.type = "range";
+			slider.min = minValue;
+			slider.max = maxValue;
+			slider.value = initialValue;
+			slider.classList.add("slider");
+
+			// Create slider value element
+			const sliderValue = document.createElement("span");
+			sliderValue.classList.add("slider-value");
+			sliderValue.textContent = initialValue;
+
+			// Append slider and value to container
+			element.appendChild(slider);
+			element.appendChild(sliderValue);
+
+			// Update slider value text on input change
+			slider.addEventListener("input", (event) => {
+				sliderValue.textContent = event.target.value;
+			});
+
+			return this;
+		},
 		tabs: function (show = false) {
 			if (!element) return this;
 			const sections = element.querySelectorAll("section");
