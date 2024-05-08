@@ -6,7 +6,7 @@
  \__,_|\___\/   |_|_| |_|\__, |
                          |___/ 
 ```
-acTiny is a lightweight JavaScript library that provides a variety of utility functions for manipulating the DOM, making AJAX requests, adding animations, and more. It aims to simplify common web development tasks and improve code readability.
+acTiny is a lightweight JavaScript library that provides a variety of utility functions for manipulating the DOM, making Fetch requests, adding animations, and more. It aims to simplify common web development tasks and improve code readability.
 
 # Required
 - Animate 4.1.1 - https://animate.style/
