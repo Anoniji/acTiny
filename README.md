@@ -18,9 +18,8 @@ acTiny is a lightweight JavaScript library that provides a variety of utility fu
 
 1. Include the acTiny library in your HTML file:
 ```HTML
-<script src="path/to/acTiny.js"></script>
+<script type="text/javascript" src="path/to/acTiny.js"></script>
 ```
-
 
 2. Access the library functions
 Use the $ shortcut to interact with acTiny's methods:
@@ -122,24 +121,20 @@ For animations that use the Animate.css library, make sure to include the Animat
 ```JavaScript
 // Fade in an element on page load
 $(document).ready(function() {
-  $("#myElement").fadeIn(2000);
+    $("#myElement").fadeIn(2000);
 });
 
 // Make an element draggable
 $("#draggableElement").draggable();
 
 // Send a GET request and display the response
-acTiny.get("https://api.example.com", { data: { id: 123 } }, function(response) {
-  console.log(response);
+$.get("https://api.example.com/data/").then(data => {
+    $("#myGet").html(data);
 });
 
 // Create a tabbed interface
-acTiny.tabs("#myTabs", "Tab 1");
+$("#myTabs").tabs("tab_1");
 
 // Enable infinite scrolling for a container
-acTiny.infiniscrool(function(data) {
-  return fetch("https://api.example.com/data", { data: data })
-    .then(response => response.json())
-    .then(data => data.items);
-}, []);
+$("#infiniscroolElement").infiniscrool($.get, ["https://api.example.com/data/"]);
 ```
