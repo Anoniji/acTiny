@@ -1,11 +1,11 @@
 /*!
- * acTiny JavaScript Library v0.5.0
+ * acTiny JavaScript Library v0.6.0
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
  * https://github.com/anoniji/acTiny/LICENSE
  *
- * Date: 2024-05-07
+ * Date: 2024-05-08
  */
 
 "use strict";
@@ -774,36 +774,36 @@ function acTiny(selector) {
 			if (!element) return this;
 
 			// Add button
-			const createButton = document.createElement('button');
+			const createButton = document.createElement("button");
 			createButton.textContent = startText;
 			element.appendChild(createButton);
 
 			// Add input
-			const createInput = document.createElement('input');
-			createInput.type = 'text';
+			const createInput = document.createElement("input");
+			createInput.type = "text";
 			createInput.placeholder = placeHolder;
 			element.appendChild(createInput);
 
 			let recorder;
 			let recognition;
 
-			createButton.addEventListener('click', () => {
+			createButton.addEventListener("click", () => {
 				if (recorder) {
 					recorder.stop();
 					recognition.stop();
-					createInput.value = '';
+					createInput.value = "";
 					createButton.textContent = startText;
 					return;
 				}
 
-	            navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+				navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
 					recorder = new MediaRecorder(stream);
 					recognition = new webkitSpeechRecognition();
 					recognition.lang = lang;
 					recognition.continuous = true;
 					recognition.interimResults = true;
 
-					recognition.addEventListener('result', (event) => {
+					recognition.addEventListener("result", (event) => {
 						const lastResult = event.results[event.resultIndex];
 						const transcript = lastResult[0].transcript;
 						createInput.value = transcript;
@@ -812,8 +812,8 @@ function acTiny(selector) {
 					recognition.start();
 					recorder.start();
 					createButton.textContent = stopText;
-                });
-	        });
+				});
+			});
 		},
 		delay: function (ms = 300) {
 			if (!element) return this;
@@ -837,6 +837,50 @@ function acTiny(selector) {
 				return null;
 			}
 		},
+		infiniscrool: function (htmlRequest, args) {
+			if (!element || !htmlRequest || !args) return this;
+
+			const contentContainer = element.querySelector(".container");
+			const loadingIndicator = element.querySelector(".loading");
+			if (!contentContainer || !loadingIndicator) return this;
+
+			// Hide loading indicator
+			loadingIndicator.style.display = "none";
+
+			// Flag to prevent multiple requests
+			let isLoading = false;
+
+			// Page number for content retrieval (adjust based on your data source)	
+			let nextPage = 1;
+
+			window.addEventListener("scroll", () => {
+				const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+				// Check if user is near the bottom of the page (adjust threshold as needed)
+				if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoading) {
+					// Set loading flag
+					isLoading = true;
+
+					// Show loading indicator
+					loadingIndicator.style.display = "block"; 
+
+					// Efficiently create a copy of args with updated nextPage
+					const updatedArgs = [...args];
+					updatedArgs[0] = `${args[0]}${nextPage}`;
+
+					// Fetch new content
+					htmlRequest(updatedArgs).then(newContent => {
+						loadingIndicator.style.display = "none";
+						contentContainer.innerHTML += newContent;
+						nextPage++;
+						isLoading = false;
+					}).catch(error => {
+						console.error("Error fetching content:", error);
+						isLoading = false;
+					});
+				}
+			});
+		}
 	};
 }
 

@@ -158,6 +158,12 @@
 		<div id="test_eq"></div>
 		<div id="test_get"></div>
 		<div id="test_getJSON"></div>
+		<div id="test_infiniscrool">
+			<div class="container"></div>
+			<div class="loading">
+				<p>Loading...</p>
+			</div>
+		</div>
 	</section>
 
 </body>
@@ -381,6 +387,9 @@
 			$("#test_getJSON").append(`<div>${key}: ${value}</div>`);
 		});
 	});
+
+	//# test_infiniscrool
+	$("#test_infiniscrool").infiniscrool($.get, ["https://jsonplaceholder.typicode.com/todos/"]);
 </script>
 
 </html>
