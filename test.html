@@ -156,6 +156,8 @@
 		<div id="test_parent">test_parent</div>
 		<div id="test_find">test_find</div>
 		<div id="test_eq"></div>
+		<button id="test_scrollTop">test_scrollTop</button>
+		<button id="test_scrollTo">test_scrollTo > test_css</button>
 		<div id="test_get"></div>
 		<div id="test_getJSON"></div>
 		<div id="test_infiniscrool">
@@ -375,6 +377,16 @@
 
 	//# test_eq
 	$("div").eq(50).html("test_eq");
+
+	//# test_scrollTop
+	$("#test_scrollTop").click(() => {
+		$(window).scrollTop();
+	});
+
+	//# test_scrollTo
+	$("#test_scrollTo").click(() => {
+		$("#test_css").scrollTo();
+	});
 
 	//# test_get
 	$.get("https://jsonplaceholder.typicode.com/todos/1").then(data => {

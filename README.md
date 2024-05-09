@@ -78,6 +78,8 @@ $(selector).method(arguments);
 - **fadeOut(direction, duration, delay):** Fades out the target element with optional direction (Up, Down, Left, Right, etc.) and animation (optional duration and delay).
 - **slideUp(direction, duration, delay):** Slides the target element up with animation (optional direction, duration, and delay).
 - **slideDown(direction, duration, delay):** Slides the target element down with animation (optional direction, duration, and delay).
+- **scrollTop(behavior):** Return the scrollbar to the top of the page (optional behavior).
+- **scrollTo(behavior):** Allows you to position the scrollbar at the location of a specific element (optional behavior).
 
 ## Interactive Elements
 
@@ -93,7 +95,7 @@ $(selector).method(arguments);
 - **tooltip(text, hideOnScroll):** Creates a tooltip that displays the specified text when hovering over the target element and optionally hides when scrolling.
 - **transcript(language, startButtonText, stopButtonText, placeholderText):** Enables speech-to-text transcription, allowing users to speak and see the text displayed in a designated input field.
 
-## AJAX Requests
+## Fetch Requests
 
 - **get(url, data, headers):** Sends a GET request to the specified URL, optionally with data and headers.
 - **post(url, data, headers):** Sends a POST request to the specified URL, optionally with data and headers.

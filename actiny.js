@@ -1,11 +1,11 @@
 /*!
- * acTiny JavaScript Library v0.6.0
+ * acTiny JavaScript Library v0.7.0
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
  * https://github.com/anoniji/acTiny/LICENSE
  *
- * Date: 2024-05-08
+ * Date: 2024-05-09
  */
 
 "use strict";
@@ -147,6 +147,7 @@ const directionFadeList = [
 	"DownBig", "LeftBig", "RightBig", "UpBig"
 ];
 const directionSlideList = ["Down", "Left", "Right", "Up"];
+const behaviorList = ["smooth", "instant", "auto"]
 const fetchList = {
 	get: (url, header = {}, body) => {
 		return fetchSimplify("GET", url, header, body, false);
@@ -879,6 +880,30 @@ function acTiny(selector) {
 						isLoading = false;
 					});
 				}
+			});
+		},
+		scrollTop: function (behavior = "smooth") {
+			if (!element) return this;
+			if (!isInList(behaviorList, behavior)) {
+				return returnErrorWithList("Behavior", behavior, behaviorList);
+			}
+			element.scrollTo({
+				top: 0,
+				left: 0,
+				behavior: behavior,
+			});
+		},
+		scrollTo: function (behavior = "smooth") {
+			if (!element) return this;
+			if (!isInList(behaviorList, behavior)) {
+				return returnErrorWithList("Behavior", behavior, behaviorList);
+			}
+
+			const rect = element.getBoundingClientRect();
+			window.scrollTo({
+				top: Math.floor(rect.top + window.scrollY),
+				left: Math.floor(rect.left + window.scrollX),
+				behavior: behavior,
 			});
 		}
 	};
