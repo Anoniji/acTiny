@@ -1,14 +1,18 @@
 /*!
- * acTiny JavaScript Library v0.7.0
+ * acTiny JavaScript Library v0.7.1
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
  * https://github.com/anoniji/acTiny/LICENSE
  *
- * Date: 2024-05-09
+ * Date: 2024-05-20
  */
 
 "use strict";
+
+
+/* CONSTANTS */
+var toast_cnt = 0
 
 
 /* FUNCTIONS */
@@ -114,6 +118,32 @@ function returnErrorWithList(title, set, list) {
 	console.error(`${title} not exist: ${set}`);
 	console.error(`${title} list     : ${list.join(", ")}`);
 	return null;
+}
+
+function getIconByType(type) {
+    const icons = {
+        error: '🔴',
+        warning: '🟠',
+        info: '🔵',
+        default: '🟢',
+    };
+    return icons[type] || icons.default;
+}
+
+function createToast(message, type) {
+	const toast_id = `toast_${toast_cnt}`;
+    const toast = `
+		<div id="${toast_id}" class="toast toast-${type}">
+			<div class="toast-header">
+				<div class="toast-icon">
+				${getIconByType(type)}
+				</div>
+				<strong class="toast-title">${message}</strong>
+			</div>
+		</div>
+		`;
+	toast_cnt += 1;
+    return [toast_id, toast];
 }
 
 /* LIST */
@@ -278,6 +308,11 @@ function acTiny(selector) {
 			return this;
 		},
 		empty: function () {
+			if (!element) return this;
+			element.innerHTML = '';
+			return this;
+		},
+		remove: function () {
 			if (!element) return this;
 			element.parentNode.removeChild(element);
 			return this;
@@ -904,6 +939,17 @@ function acTiny(selector) {
 				top: Math.floor(rect.top + window.scrollY),
 				left: Math.floor(rect.left + window.scrollX),
 				behavior: behavior,
+			});
+		},
+		toast: function (message, type = "success", direction = 'Right', duration = 500, delay = 10000) {
+			if (!element && !message) return this;
+			const [toast_id, toast] = createToast(message, type);
+
+			element.insertAdjacentHTML("beforeend", toast);
+			$(`#${toast_id}`).slideUp(direction, duration, 0).then(() => {
+				$(`#${toast_id}`).slideDown(direction, duration, delay).then(() => {
+					$(`#${toast_id}`).empty();
+				});
 			});
 		}
 	};

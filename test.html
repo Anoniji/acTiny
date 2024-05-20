@@ -33,6 +33,89 @@
 			height: 80px;
 			border: 2px solid #000;
 		}
+
+		/* TOAST */
+		.toast {
+			position: fixed;
+			z-index: 100001;
+			bottom: 25px;
+			right: 0;
+			background-color: #f5f5f5;
+			border: 1px solid #dee2e6;
+			border-radius: 5px;
+			box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.05);
+			padding: 0;
+			font-size: 0.8rem;
+			line-height: 1.5;
+			color: #6c757d;
+			margin-top: 15px;
+			align-items: center;
+			width: 350px;
+			max-width: 100%;
+			user-select: none;
+		}
+
+		.toast-success {
+			background: #4caf50;
+			border: 1px solid rgba(0, 0, 0, .6);
+			box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+			color: black;
+		}
+
+		.toast-warning {
+			background: #ff9800;
+			border: 1px solid rgba(0, 0, 0, .6);
+			box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+			color: black;
+		}
+
+		.toast-info {
+			background: #00bcd4;
+			border: 1px solid rgba(0, 0, 0, .6);
+			box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+			color: black;
+		}
+
+		.toast-error {
+			background: #f44336;
+			border: 1px solid rgba(0, 0, 0, .6);
+			box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+			color: black;
+		}
+
+		.toast-error .toast-header .toast-icon,
+		.toast-success .toast-header .toast-icon,
+		.toast-warning .toast-header .toast-icon,
+		.toast-info .toast-header .toast-icon {
+			color: black;
+		}
+
+		.toast-header {
+			display: flex;
+			align-items: center;
+		}
+
+		.toast-header .toast-icon {
+			margin-right: 10px;
+			font-size: 20px;
+			color: #6c757d;
+		}
+
+		.toast-icon {
+			margin: -18px 0;
+			text-shadow: 0 0 5px black;
+		}
+
+		.toast-header .toast-title {
+			cursor: default;
+			margin-bottom: 0;
+			font-size: 16px;
+			font-weight: 600;
+		}
+		.toast .progress-bar {
+			position: relative;
+			top: -3px;
+		}
 	</style>
 </head>
 
@@ -51,6 +134,7 @@
 		<div id="test_prepend"></div>
 		<div id="test_append"></div>
 		<div id="test_empty">test_empty</div>
+		<div id="test_remove">test_remove</div>
 		<div id="test_attr"></div>
 		<div id="test_removeAttr" class="test_removeAttr"></div>
 		<div id="test_addClass"></div>
@@ -190,13 +274,16 @@
 	$("#test_before").before("p", "test_before");
 
 	//# test_prepend
-	$("#test_prepend").prepend("test_prepend");
+	$("#test_prepend").prepend("<b>test_prepend</b>");
 
 	//# test_append
-	$("#test_append").append("test_append");
+	$("#test_append").append("<b>test_append</b>");
 
-	//# test_append
+	//# test_empty
 	$("#test_empty").empty();
+
+	//# test_remove
+	$("#test_remove").remove();
 
 	//# test_attr
 	$("#test_attr").attr("class", "test_attr");
@@ -376,7 +463,7 @@
 	});
 
 	//# test_eq
-	$("div").eq(50).html("test_eq");
+	$("div").eq(51).html("test_eq");
 
 	//# test_scrollTop
 	$("#test_scrollTop").click(() => {
@@ -402,6 +489,9 @@
 
 	//# test_infiniscrool
 	$("#test_infiniscrool").infiniscrool($.get, ["https://jsonplaceholder.typicode.com/todos/"]);
+
+	//# test_toast
+	$("body").toast('test_toast');
 </script>
 
 </html>
