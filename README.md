@@ -112,6 +112,8 @@ $(selector).method(arguments);
 
 - **delay(milliseconds):** Returns a promise that resolves after the specified number of milliseconds.
 - **infiniscrool(fetchFunction, data):** Enables infinite scrolling, loading more content as the user scrolls to the bottom of the page.
+- **toast(message, type, direction, duration, delay):** Creates a dismissible toast notification with customizable message, type, direction, and timing.
+- **translator(lang, dict, attr):** Translates elements with data-i18n attribute based on language and dictionary, observing for new elements.
 
 # Additional Notes
 
