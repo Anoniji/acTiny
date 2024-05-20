@@ -1,5 +1,5 @@
 /*!
- * acTiny JavaScript Library v0.7.1
+ * acTiny JavaScript Library v0.7.2
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
@@ -948,7 +948,7 @@ function acTiny(selector) {
 			element.insertAdjacentHTML("beforeend", toast);
 			$(`#${toast_id}`).slideUp(direction, duration, 0).then(() => {
 				$(`#${toast_id}`).slideDown(direction, duration, delay).then(() => {
-					$(`#${toast_id}`).empty();
+					$(`#${toast_id}`).remove();
 				});
 			});
 		}
