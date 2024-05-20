@@ -1,5 +1,5 @@
 /*!
- * acTiny JavaScript Library v0.7.2
+ * acTiny JavaScript Library v0.8.0
  * https://github.com/anoniji/acTiny
  *
  * Released under the MIT license
@@ -319,7 +319,9 @@ function acTiny(selector) {
 		},
 		attr: function (attribute, content) {
 			if (!element || !attribute || !content) return this;
-			element.setAttribute(attribute, content);
+			if (!content) return element.getAttribute(attribute);
+
+			element.setAttribute(attribute, content);			
 			return this;
 		},
 		removeAttr: function (attribute) {
@@ -951,7 +953,33 @@ function acTiny(selector) {
 					$(`#${toast_id}`).remove();
 				});
 			});
-		}
+		},
+		translator: function (lang, dict, attr = 'data-i18n') {
+			if (!element && !lang && !dict) return this;
+
+			for (const elementWithI18nAttr of element.querySelectorAll(`[${attr}]`)) {
+				const i18n = elementWithI18nAttr.getAttribute(attr)
+				if (lang in dict && i18n in dict[lang]) {
+					elementWithI18nAttr.textContent = dict[lang][i18n];	
+				}
+			}
+
+			const observer = new MutationObserver((mutations) => {
+				for (const mutation of mutations) {
+					if (mutation.type === 'childList') {
+						for (const addedNode of mutation.addedNodes) {
+							const i18nAttribute = addedNode.getAttribute(attr);
+							if (i18nAttribute) {
+								if (lang in dict && i18nAttribute in dict[lang]) {
+									addedNode.textContent = dict[lang][i18nAttribute];	
+								}
+							}
+						}
+					}
+				}
+			});
+			observer.observe(element, { childList: true });
+		},
 	};
 }
 

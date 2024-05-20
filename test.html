@@ -244,6 +244,7 @@
 		<button id="test_scrollTo">test_scrollTo > test_css</button>
 		<div id="test_get"></div>
 		<div id="test_getJSON"></div>
+		<div id="test_translator" data-i18n="test_translator"></div>
 		<div id="test_infiniscrool">
 			<div class="container"></div>
 			<div class="loading">
@@ -492,6 +493,17 @@
 
 	//# test_toast
 	$("body").toast('test_toast');
+
+
+	//# test_translator
+	$(document).translator('fr', {
+		'fr': {
+			'test_translator': 'fr'
+		},
+		'en': {
+			'test_translator': 'en'
+		}
+	});
 </script>
 
 </html>
